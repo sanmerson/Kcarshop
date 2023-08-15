@@ -81,10 +81,7 @@ export default function Dashboard() {
                 </Details>
               </span>
               <Body_1_400>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dicta
-                rem consectetur at, esse expedita eos eius id deleniti voluptas
-                amet nobis explicabo maxime sit culpa, blanditiis temporibus
-                ratione, placeat animi?
+                  {userSeller.description}
               </Body_1_400>
             </aside>
 

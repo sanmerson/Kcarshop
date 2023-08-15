@@ -3,14 +3,14 @@ import { ButtonBig } from '@/src/components/button-big';
 import { Footer } from '@/src/components/footer';
 import { Header } from '@/src/components/header';
 import { UserContext } from '@/src/contexts/userContext';
-import { iFormRegister } from '@/src/interfaces/user';
+import { IUser, iFormRegister } from '@/src/interfaces/user';
 import { userSchema } from '@/src/schemas/userSchema';
 import {
   RegisterStyled,
   StyledAdress,
   StyledCheckbox,
 } from '@/src/styles/containers';
-import { Body_2_500, Heading_5_500 } from '@/src/styles/global';
+import { Body_2_500, Button_big_text, Heading_5_500 } from '@/src/styles/global';
 import { StyledInput2 } from '@/src/styles/input';
 import { StyledLabels } from '@/src/styles/labels';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,7 +18,9 @@ import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function Register() {
-  const { RegisterUser } = useContext(UserContext);
+  const { RegisterUser,
+        setisAnnouncement,
+        isAnnouncement, } = useContext(UserContext);
 
   const {
     register,
@@ -29,13 +31,18 @@ export default function Register() {
     resolver: yupResolver(userSchema),
   });
 
+  const handleSubmitFunction = async (data: iFormRegister) => {
+    data.is_seller = (isAnnouncement)
+    data.birth_date = data.birth_date.split('/').reverse().join('/');
+    await RegisterUser(data)
+  }
   return (
     <>
       <Header />
       <RegisterStyled>
         <div className="containerInput">
           <Heading_5_500>Cadastro</Heading_5_500>
-          <form onSubmit={handleSubmit(RegisterUser)}>
+          <form onSubmit={handleSubmit(handleSubmitFunction)}>
           <div className="containerInput">
             <Body_2_500>Informações pessoais</Body_2_500>
             <StyledLabels htmlFor="name">Nome</StyledLabels>
@@ -158,29 +165,32 @@ export default function Register() {
 
             <Body_2_500>Tipo de conta</Body_2_500>
             <div>
-              <StyledCheckbox htmlFor="seler_false">
-                <input
-                  type="checkbox"
-                  id="seler_true"
-                  value="true"
-                  {...register('is_seller')}
-                ></input>
-                <div>
-                  <span>Anunciante</span>
-                </div>
-              </StyledCheckbox>
-
-              <StyledCheckbox htmlFor="seler_true">
-                <input
-                  type="checkbox"
-                  id="seler_false"
-                  value="false"
-                  {...register('is_seller')}
-                ></input>
-                <div>
-                  <span>Comprador</span>
-                </div>
-              </StyledCheckbox>
+              <StyledCheckbox type="button"
+              onClick={()=>{setisAnnouncement(!isAnnouncement)}}
+              style={
+                    isAnnouncement
+                      ? {
+                          backgroundColor: 'var(--color-brand-1)',
+                          color: 'var(--color-whiteFixed)',
+                        }
+                      : {
+                          backgroundColor: 'var(--color-whiteFixed)',
+                          color: 'var(--color-grey-0)',
+                        }
+                  }>Anunciante</StyledCheckbox>
+              <StyledCheckbox type="button"
+                onClick={()=>{setisAnnouncement(!isAnnouncement)}}
+                  style={
+                        !isAnnouncement
+                          ? {
+                              backgroundColor: 'var(--color-brand-1)',
+                              color: 'var(--color-whiteFixed)',
+                            }
+                          : {
+                              backgroundColor: 'var(--color-whiteFixed)',
+                              color: 'var(--color-grey-0)',
+                            }
+                  }>Comprador</StyledCheckbox>
             </div>
 
             <div className="containerInput">

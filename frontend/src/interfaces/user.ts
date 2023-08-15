@@ -30,10 +30,14 @@ export interface IUserContext {
     React.SetStateAction<IUserAnnouncement | null>
   >;
 
+  isAnnouncement: boolean;
+  setisAnnouncement: React.Dispatch<React.SetStateAction<boolean>>;
+
   LoginUser: any;
   RegisterUser: any;
   ResetPassword: any;
   EditUser: any;
+ 
 
   isEditCommentModal: boolean;
   setIsEditCommentModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -128,7 +132,7 @@ export interface iFormRegister {
   birth_date: string;
   description: string;
   address: iFormRegisterAddress;
-  is_seller: string;
+  is_seller: boolean;
   complement: string;
   road: string;
   number: string;

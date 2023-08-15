@@ -25,6 +25,9 @@ export const EditUserModal = () => {
   });
 
   const teste = async (data: any) => {
+    if(data.birth_date){
+      data.birth_date = data.birth_date.split('/').reverse().join('/')
+    }
     let o = Object.fromEntries(
       Object.entries(data).filter(([_, v]) => v != '')
     );
@@ -96,7 +99,7 @@ export const EditUserModal = () => {
             <StyledLabels htmlFor="birth_date">Data de nascimento</StyledLabels>
             <StyledInput2
               id="birth_date"
-              placeholder={user?.birth_date}
+              placeholder={user?.birth_date.split('T')[0].split('-').reverse().join('/')}
               {...register('birth_date')}
             />
 

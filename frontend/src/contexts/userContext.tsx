@@ -11,6 +11,7 @@ import {
 } from '../interfaces/user';
 import { api } from '../services/api';
 import { LoadContext } from './loadingContext';
+import { reach } from 'yup';
 
 export const UserContext = React.createContext({} as IUserContext);
 
@@ -20,6 +21,8 @@ const UserProvider = ({ children }: IContextProps) => {
   const { setLoad } = React.useContext(LoadContext);
 
   const [user, setUser] = React.useState<IUser | null>(null);
+
+  const [isAnnouncement, setisAnnouncement] = React.useState(false)
 
   const [myAnnouncement, setMyAnnouncement] = React.useState<
     IUserAnnouncement[] | null
@@ -71,7 +74,7 @@ const UserProvider = ({ children }: IContextProps) => {
       router.push('/');
     } catch (error: any) {
       console.log(error)
-      toast.error(error?.response.data.message, {
+      toast.error(error?.response?.data?.message, {
         position: 'bottom-right',
         autoClose: 5000,
       });
@@ -86,7 +89,7 @@ const UserProvider = ({ children }: IContextProps) => {
       await api.post('/api/users', data);
       router.push('/login');
     } catch (error: any) {
-      toast.error(error?.response.data.message, {
+      toast.error(error?.response?.data?.message, {
         position: 'bottom-right',
         autoClose: 5000,
       });
@@ -103,7 +106,7 @@ const UserProvider = ({ children }: IContextProps) => {
         autoClose: 5000,
       });
     } catch (error: any) {
-      toast.error(error?.response.data.message, {
+      toast.error(error?.response?.data?.message, {
         position: 'bottom-right',
         autoClose: 5000,
       });
@@ -185,7 +188,7 @@ const UserProvider = ({ children }: IContextProps) => {
 
         setUser(data);
       } catch (e: any) {
-        toast.error(e.response.data.message, {
+        toast.error(e.response?.data?.message, {
           position: 'bottom-right',
           autoClose: 5000,
         });
@@ -224,6 +227,8 @@ const UserProvider = ({ children }: IContextProps) => {
         setIsEditCommentModal,
         isDeleteCommentModal,
         setIsDeleteCommentModal,
+        isAnnouncement,
+        setisAnnouncement,
         comments,
         setComments,
       }}

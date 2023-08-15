@@ -223,6 +223,24 @@ export const Button_big_text = styled.button`
   }
 `;
 
+export const Button_big_text2 = styled.button`
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 1.6rem;
+  width: 100%;
+  height: 4.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  border-style: solid;
+  border-width: 0.15rem;
+  :hover {
+    filter: brightness(1.1);
+  }
+`;
+
 export const Button_medium_text = styled.button`
   font-family: var(--font-inter);
   font-weight: 600;

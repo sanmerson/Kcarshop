@@ -22,7 +22,7 @@ export const userSchema = yup.object({
       .email('Deve ser um e-mail válido'),
     phone: yup.string().required('digite o seu telefone'),
     cpf: yup.string().required('digite o seu cpf'),
-    birth_date: yup.date().required('digite a sua data de nascimento'),
+    birth_date: yup.string().required('digite a sua data de nascimento'),
     description: yup.string().required('digite uma descrição'),
     address: yup.object({
       cep: yup.string().required('digite o seu cep'),

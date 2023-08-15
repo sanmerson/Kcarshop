@@ -330,7 +330,7 @@ export const StyledAdress = styled.div`
   }
 `;
 
-export const StyledCheckbox = styled.label`
+export const StyledCheckbox = styled.button`
   position: relative;
   width: 42%;
   height: 5rem;
