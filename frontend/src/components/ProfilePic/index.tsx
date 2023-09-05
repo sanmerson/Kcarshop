@@ -12,7 +12,7 @@ export const ProfilePic = ({user, isLarge}: iProfilePicProps) => {
   useEffect(() => {
     const avatar = () => {
       let initials = "";
-      const name = user.split(" ")
+      const name = user?.split(" ")
       
       if (name.length === 1) {
         initials = name[0][0]

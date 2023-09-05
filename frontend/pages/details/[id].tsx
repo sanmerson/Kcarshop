@@ -218,7 +218,7 @@ export default function DetailsPage() {
                   </section>
 
                   <section className="profile">
-                    <ProfilePic user={detailAnnouncement.user!.name} isLarge={true}/>
+                    <ProfilePic user={detailAnnouncement.user!?.name} isLarge={true}/>
                     <Heading_6_600>
                       {detailAnnouncement.user?.name}
                     </Heading_6_600>
