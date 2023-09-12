@@ -3,18 +3,18 @@ import { ButtonBig } from '@/src/components/button-big';
 import { Footer } from '@/src/components/footer';
 import { Header } from '@/src/components/header';
 import { UserContext } from '@/src/contexts/userContext';
-import { IUser, iFormRegister } from '@/src/interfaces/user';
+import { iFormRegister } from '@/src/interfaces/user';
 import { userSchema } from '@/src/schemas/userSchema';
 import {
   RegisterStyled,
   StyledAdress,
   StyledCheckbox,
 } from '@/src/styles/containers';
-import { Body_2_500, Button_big_text, Heading_5_500 } from '@/src/styles/global';
+import { Body_2_500, Heading_5_500 } from '@/src/styles/global';
 import { StyledInput2 } from '@/src/styles/input';
 import { StyledLabels } from '@/src/styles/labels';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function Register() {
@@ -25,24 +25,60 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    watch,
+    getValues,
+    setValue,
+    formState: { errors},
   } = useForm<iFormRegister>({
     criteriaMode: 'all',
     resolver: yupResolver(userSchema),
   });
 
-  const handleSubmitFunction = async (data: iFormRegister) => {
-    data.is_seller = (isAnnouncement)
-    data.birth_date = data.birth_date.split('/').reverse().join('/');
-    await RegisterUser(data)
-  }
+
+  useEffect(()=>{
+   var formatedCPF = getValues('cpf')
+    formatedCPF = formatedCPF.replace(/\D/g, "");
+    formatedCPF = formatedCPF.substring(0, 11);
+    formatedCPF = formatedCPF.replace(/(\d{3})(\d)/, "$1.$2")
+    formatedCPF = formatedCPF.replace(/(\d{3})(\d)/, "$1.$2")
+    formatedCPF = formatedCPF.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+   setValue('cpf', formatedCPF)
+  }, [watch('cpf')])
+
+  useEffect(()=>{
+    var formatedPhone = getValues('phone')
+     formatedPhone = formatedPhone.replace(/\D/g, "");
+     formatedPhone = formatedPhone.substring(0, 11);
+     formatedPhone = formatedPhone.replace(/(\d{2})(\d)/, "($1) $2")
+     formatedPhone = formatedPhone.replace(/(\d{5})(\d)/, "$1-$2")
+    setValue('phone', formatedPhone)
+   }, [watch('phone')])
+
+   useEffect(()=>{
+    var formatedDate = getValues('birth_date')
+     formatedDate = formatedDate.replace(/\D/g, "");
+     formatedDate = formatedDate.substring(0, 8);
+     formatedDate = formatedDate.replace(/(\d{2})(\d)/, "$1/$2")
+     formatedDate = formatedDate.replace(/(\d{2})(\d)/, "$1/$2")
+     formatedDate = formatedDate.replace(/(\d{4})(\d)/, "$1/$2")
+    setValue('birth_date', formatedDate)
+   }, [watch('birth_date')])
+
+
+   useEffect(()=>{
+    var formatedCep = getValues('address.cep')
+    formatedCep = formatedCep.replace(/\D/g, "");
+    formatedCep = formatedCep.substring(0, 8);
+    formatedCep = formatedCep.replace(/(\d{5})(\d)/, "$1-$2")
+    setValue('address.cep', formatedCep)
+   }, [watch('address.cep')])
   return (
     <>
       <Header />
       <RegisterStyled>
         <div className="containerInput">
           <Heading_5_500>Cadastro</Heading_5_500>
-          <form onSubmit={handleSubmit(handleSubmitFunction)}>
+          <form onSubmit={handleSubmit(RegisterUser)}>
           <div className="containerInput">
             <Body_2_500>Informações pessoais</Body_2_500>
             <StyledLabels htmlFor="name">Nome</StyledLabels>
@@ -78,7 +114,7 @@ export default function Register() {
               <StyledLabels htmlFor="phone">Celular</StyledLabels>
               <StyledInput2
                 id="phone"
-                placeholder="(DDD) 90000-0000"
+                placeholder="(00) 90000-0000"
                 {...register('phone')}
               />
               <StyledSpanError>{errors.phone?.message}</StyledSpanError>
@@ -88,7 +124,7 @@ export default function Register() {
               <StyledLabels htmlFor="birth_date">Data de nascimento</StyledLabels>
               <StyledInput2
                 id="birth_date"
-                placeholder="00/00/00"
+                placeholder="00/00/0000"
                 {...register('birth_date')}
               />
               <StyledSpanError>{errors.birth_date?.message}</StyledSpanError>
